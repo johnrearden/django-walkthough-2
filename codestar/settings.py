@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from django.contrib.messages import constants as messages
 if os.path.isfile('env.py'):
     import env
 
@@ -27,10 +28,13 @@ TEMPATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
 
 ALLOWED_HOSTS = ['django-walkthrough-2-codestar.herokuapp.com', 'localhost']
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 # Application definition
 
@@ -40,11 +44,32 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'cloudinary_storage',
     'django.contrib.staticfiles',
     'cloudinary',
+    'django_summernote',
+    'crispy_forms',
     'blog',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -84,16 +109,6 @@ DATABASES = {
     'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
 
-""" DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd325gnhil72ubi',
-        'USER': 'hlulketsnthfgd',
-        'PASSWORD': 'a57ef43e444f3675c109a1f03ad3a47fb91329cb22562500eca9c410a994bb5b',
-        'HOST': 'ec2-54-194-211-183.eu-west-1.compute.amazonaws.com',
-        'PORT': '5432',
-    }
-} """
 
 """ DATABASES = {
     'default': {
